@@ -1,0 +1,41 @@
+import { Sequelize } from 'sequelize';
+import { initRoleModel } from './Role';
+import { initUserModel } from './User';
+import { initDepartmentModel } from './Department';
+import { initPositionModel } from './Position';
+import { initScheduleModel } from './Schedule';
+import { initEmployeeModel } from './Employee';
+import { initRawClockingModel } from './RawClocking';
+import { initAttendanceComputedModel } from './AttendanceComputed';
+import { initIncidenceRuleModel } from './IncidenceRule';
+import { initIncidenceModel } from './Incidence';
+import { initPeriodModel } from './Period';
+import { initAuditLogModel } from './AuditLog';
+
+export const initModels = (sequelize: Sequelize) => {
+  initRoleModel(sequelize);
+  initUserModel(sequelize);
+  initDepartmentModel(sequelize);
+  initPositionModel(sequelize);
+  initScheduleModel(sequelize);
+  initEmployeeModel(sequelize);
+  initPeriodModel(sequelize);
+  initRawClockingModel(sequelize);
+  initAttendanceComputedModel(sequelize);
+  initIncidenceRuleModel(sequelize);
+  initIncidenceModel(sequelize);
+  initAuditLogModel(sequelize);
+};
+
+export * from './Role';
+export * from './User';
+export * from './Department';
+export * from './Position';
+export * from './Schedule';
+export * from './Employee';
+export * from './RawClocking';
+export * from './AttendanceComputed';
+export * from './IncidenceRule';
+export * from './Incidence';
+export * from './Period';
+export * from './AuditLog';

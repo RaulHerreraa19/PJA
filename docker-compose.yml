@@ -1,0 +1,86 @@
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: attendance_db
+      MYSQL_USER: attendance
+      MYSQL_PASSWORD: attendance123
+    ports:
+      - '3307:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 10
+      timeout: 5s
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+
+  backend:
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: production
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: attendance
+      DB_PASSWORD: attendance123
+      DB_NAME: attendance_db
+      REDIS_URL: redis://redis:6379
+      APP_URL: http://localhost:5173
+    volumes:
+      - ./backend/tmp/uploads:/app/tmp/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - '4000:4000'
+    command: sh -c "npm run migrate:dist && npm run seed:dist && node dist/server.js"
+
+  worker:
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: production
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: attendance
+      DB_PASSWORD: attendance123
+      DB_NAME: attendance_db
+      REDIS_URL: redis://redis:6379
+      APP_URL: http://localhost:5173
+    volumes:
+      - ./backend/tmp/uploads:/app/tmp/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    command: npm run queue:worker:dist
+
+  frontend:
+    build:
+      context: ./PJA
+    environment:
+      VITE_API_URL: http://localhost:4000/api
+    ports:
+      - '5173:5173'
+    depends_on:
+      backend:
+        condition: service_started
+
+volumes:
+  mysql_data:

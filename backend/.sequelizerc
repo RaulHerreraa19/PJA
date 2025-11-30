@@ -1,0 +1,10 @@
+const path = require("path");
+
+const root = path.resolve();
+
+module.exports = {
+  config: path.join(root, "src", "database", "config", "config.ts"),
+  "models-path": path.join(root, "src", "database", "models"),
+  "migrations-path": path.join(root, "src", "database", "migrations"),
+  "seeders-path": path.join(root, "src", "database", "seeders"),
+};
