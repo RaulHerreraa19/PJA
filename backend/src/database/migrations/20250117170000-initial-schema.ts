@@ -9,7 +9,7 @@ export default {
         allowNull: false
       },
       name: {
-        type: DataTypes.ENUM('admin', 'rh', 'user'),
+        type: DataTypes.ENUM('admin', 'rh', 'user', 'jefaturas-adscripciones', 'ti'),
         allowNull: false,
         unique: true
       },
@@ -36,7 +36,8 @@ export default {
       role_id: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: { model: 'roles', key: 'id' }
+        references: { model: 'roles', key: 'id' },
+        onUpdate: 'CASCADE'
       },
       refresh_token_hash: {
         type: DataTypes.STRING
@@ -83,7 +84,8 @@ export default {
       department_id: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: { model: 'departments', key: 'id' }
+        references: { model: 'departments', key: 'id' },
+        onUpdate: 'CASCADE'
       },
       created_at: DataTypes.DATE,
       updated_at: DataTypes.DATE
@@ -136,15 +138,18 @@ export default {
       email: DataTypes.STRING,
       department_id: {
         type: DataTypes.UUID,
-        references: { model: 'departments', key: 'id' }
+        references: { model: 'departments', key: 'id' },
+        onUpdate: 'CASCADE'
       },
       position_id: {
         type: DataTypes.UUID,
-        references: { model: 'positions', key: 'id' }
+        references: { model: 'positions', key: 'id' },
+        onUpdate: 'CASCADE'
       },
       schedule_id: {
         type: DataTypes.UUID,
-        references: { model: 'schedules', key: 'id' }
+        references: { model: 'schedules', key: 'id' },
+        onUpdate: 'CASCADE'
       },
       hire_date: DataTypes.DATE,
       status: {
@@ -199,7 +204,9 @@ export default {
       },
       employee_id: {
         type: DataTypes.UUID,
-        references: { model: 'employees', key: 'id' }
+        references: { model: 'employees', key: 'id' },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       device_id: {
         type: DataTypes.STRING,
@@ -233,11 +240,14 @@ export default {
       employee_id: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: { model: 'employees', key: 'id' }
+        references: { model: 'employees', key: 'id' },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       period_id: {
         type: DataTypes.UUID,
-        references: { model: 'periods', key: 'id' }
+        references: { model: 'periods', key: 'id' },
+        onUpdate: 'CASCADE'
       },
       date: {
         type: DataTypes.DATEONLY,
@@ -264,6 +274,53 @@ export default {
       name: 'uniq_attendance_per_day'
     });
 
+    await queryInterface.createTable('incidences', {
+      id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+        allowNull: false
+      },
+      employee_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: { model: 'employees', key: 'id' },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      },
+      attendance_id: {
+        type: DataTypes.UUID,
+        references: { model: 'attendance_computed', key: 'id' },
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
+      },
+      rule_id: {
+        type: DataTypes.UUID,
+        references: { model: 'incidence_rules', key: 'id' },
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
+      },
+      type: {
+        type: DataTypes.ENUM('delay', 'absence', 'early_exit', 'overtime'),
+        allowNull: false
+      },
+      occurred_at: {
+        type: DataTypes.DATE,
+        allowNull: false
+      },
+      minutes: DataTypes.INTEGER,
+      status: {
+        type: DataTypes.ENUM('pending', 'acknowledged', 'dismissed'),
+        allowNull: false,
+        defaultValue: 'pending'
+      },
+      notes: DataTypes.TEXT,
+      created_at: DataTypes.DATE,
+      updated_at: DataTypes.DATE
+    });
+
+    await queryInterface.addIndex('incidences', ['employee_id', 'type']);
+    await queryInterface.addIndex('incidences', ['status']);
+
     await queryInterface.createTable('audit_logs', {
       id: {
         type: DataTypes.UUID,
@@ -272,7 +329,9 @@ export default {
       user_id: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: { model: 'users', key: 'id' }
+        references: { model: 'users', key: 'id' },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       action: {
         type: DataTypes.STRING,
@@ -289,6 +348,7 @@ export default {
 
   down: async (queryInterface: QueryInterface) => {
     await queryInterface.dropTable('audit_logs');
+    await queryInterface.dropTable('incidences');
     await queryInterface.dropTable('attendance_computed');
     await queryInterface.dropTable('raw_clockings');
     await queryInterface.dropTable('incidence_rules');

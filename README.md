@@ -4,11 +4,11 @@ Suite full‑stack para el control de asistencia del Poder Judicial del Estado d
 
 ## Stack principal
 
-| Capa      | Tecnologías clave |
-|-----------|-------------------|
-| Backend   | Node 20 · TypeScript · Express 4 · Sequelize 6 · BullMQ · Puppeteer · Pino |
-| Frontend  | React 19 · Vite · TypeScript · Mantine UI · Zustand · Axios |
-| Infra     | Docker Compose · MySQL 8 · Redis 7 · Nodemon/ts-node para desarrollo |
+| Capa     | Tecnologías clave                                                          |
+| -------- | -------------------------------------------------------------------------- |
+| Backend  | Node 20 · TypeScript · Express 4 · Sequelize 6 · BullMQ · Puppeteer · Pino |
+| Frontend | React 19 · Vite · TypeScript · Mantine UI · Zustand · Axios                |
+| Infra    | Docker Compose · MySQL 8 · Redis 7 · Nodemon/ts-node para desarrollo       |
 
 ## Funcionalidades destacadas
 
@@ -55,11 +55,11 @@ Suite full‑stack para el control de asistencia del Poder Judicial del Estado d
 
 ### Credenciales de prueba (seeders)
 
-| Rol | Usuario | Contraseña |
-|-----|---------|------------|
-| Administrador | `admin@empresa.com` | `Admin123*` |
-| RH | `rh@empresa.com` | `rrhh12345` |
-| Técnico (TI) | `ti@empresa.com` | `Ti12345*` |
+| Rol                     | Usuario                   | Contraseña        |
+| ----------------------- | ------------------------- | ----------------- |
+| Administrador           | `admin@empresa.com`       | `Admin123*`       |
+| RH                      | `rh@empresa.com`          | `rrhh12345`       |
+| Técnico (TI)            | `ti@empresa.com`          | `Ti12345*`        |
 | Consultoría / Jefaturas | `consultoria@empresa.com` | `Consultoria123*` |
 
 _Nota:_ Las contraseñas se encuentran en los seeders `20250101010000-base-seed` y `20250115020000-add-new-roles`. Modifícalas si el proyecto será público.
@@ -68,20 +68,20 @@ _Nota:_ Las contraseñas se encuentran en los seeders `20250101010000-base-seed`
 
 ### Backend (`backend/.env`)
 
-| Variable | Descripción |
-|----------|-------------|
-| `PORT` | Puerto HTTP del API (default 4000).
-| `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` | Conexión MySQL.
-| `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET` | Llaves para los tokens.
-| `REDIS_URL`, `BULLMQ_PREFIX` | Cola de trabajos.
-| `FILE_UPLOAD_DIR` | Carpeta donde se guardan los archivos importados.
+| Variable                                                  | Descripción                                       |
+| --------------------------------------------------------- | ------------------------------------------------- |
+| `PORT`                                                    | Puerto HTTP del API (default 4000).               |
+| `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` | Conexión MySQL.                                   |
+| `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`                 | Llaves para los tokens.                           |
+| `REDIS_URL`, `BULLMQ_PREFIX`                              | Cola de trabajos.                                 |
+| `FILE_UPLOAD_DIR`                                         | Carpeta donde se guardan los archivos importados. |
 
 ### Frontend (`PJA/.env`)
 
-| Variable | Descripción |
-|----------|-------------|
-| `VITE_API_URL` | URL base del backend (ej. `http://localhost:4000/api`).
-| `VITE_SESSION_TIMEOUT` | (Opcional) Expiración de sesión en minutos.
+| Variable               | Descripción                                             |
+| ---------------------- | ------------------------------------------------------- |
+| `VITE_API_URL`         | URL base del backend (ej. `http://localhost:4000/api`). |
+| `VITE_SESSION_TIMEOUT` | (Opcional) Expiración de sesión en minutos.             |
 
 ## Flujo de desarrollo sin Docker (opcional)
 
@@ -105,15 +105,15 @@ _Nota:_ Las contraseñas se encuentran en los seeders `20250101010000-base-seed`
 
 ## Scripts útiles
 
-| Ubicación | Comando | Descripción |
-|-----------|---------|-------------|
-| backend   | `npm run dev` | API en modo watch (Nodemon + ts-node).
-| backend   | `npm run build` / `npm run start` | Compilación y servidor productivo.
-| backend   | `npm run migrate` / `npm run seed` | Ejecutar migraciones y seeders.
-| backend   | `npm run queue:worker` | Inicia el worker BullMQ.
-| backend   | `npm run test` | Ejecuta Jest (unit/integration).
-| frontend  | `npm run dev` | Vite + React en caliente.
-| frontend  | `npm run build` / `npm run preview` | Build y verificación productiva.
+| Ubicación | Comando                             | Descripción                            |
+| --------- | ----------------------------------- | -------------------------------------- |
+| backend   | `npm run dev`                       | API en modo watch (Nodemon + ts-node). |
+| backend   | `npm run build` / `npm run start`   | Compilación y servidor productivo.     |
+| backend   | `npm run migrate` / `npm run seed`  | Ejecutar migraciones y seeders.        |
+| backend   | `npm run queue:worker`              | Inicia el worker BullMQ.               |
+| backend   | `npm run test`                      | Ejecuta Jest (unit/integration).       |
+| frontend  | `npm run dev`                       | Vite + React en caliente.              |
+| frontend  | `npm run build` / `npm run preview` | Build y verificación productiva.       |
 
 ## Migraciones y datos de prueba
 
